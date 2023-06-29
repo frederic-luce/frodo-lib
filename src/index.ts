@@ -17,6 +17,8 @@ export * as TreeRaw from './api/TreeApi';
 export * as TypesRaw from './api/ApiTypes';
 export * as VariablesRaw from './api/cloud/VariablesApi';
 export * as IdmConfigRaw from './api/IdmConfigApi';
+export * as BaseApi from './api/BaseApi';
+export * as ApiUtils from './api/utils/ApiUtils';
 
 // Ops Layer
 export * as Admin from './ops/AdminOps';
