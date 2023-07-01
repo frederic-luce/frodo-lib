@@ -5,6 +5,7 @@ import * as state from '../shared/State';
 import { PagedResult, ScriptSkeleton } from './ApiTypes';
 
 const scriptURLTemplate = '%s/json%s/scripts/%s';
+const scriptValidateURLTemplate = '%s/json%s/scripts/?_action=validate';
 const scriptListURLTemplate = '%s/json%s/scripts?_queryFilter=true';
 const scriptQueryURLTemplate =
   '%s/json%s/scripts?_queryFilter=name+eq+%%22%s%%22';
@@ -96,6 +97,29 @@ export async function putScript(scriptId, scriptData) {
   );
   return data;
 }
+
+/**
+ * Put script
+ * @param {string} scriptId script uuid
+ * @param {Object} scriptData script object
+ * @returns {Promise} a promise that resolves to an object containing a script object
+ */
+export async function validateScript(language, script) {
+  const urlString = util.format(
+    scriptValidateURLTemplate,
+    state.getHost(),
+    getCurrentRealmPath()
+  );
+  const { data } = await generateAmApi(getApiConfig()).post(
+    urlString,
+    { language, script },
+    {
+      withCredentials: true,
+    }
+  );
+  return data;
+}
+
 
 /**
  * Delete script by id

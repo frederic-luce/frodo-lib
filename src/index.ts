@@ -19,6 +19,7 @@ export * as VariablesRaw from './api/cloud/VariablesApi';
 export * as IdmConfigRaw from './api/IdmConfigApi';
 export * as BaseApi from './api/BaseApi';
 export * as ApiUtils from './api/utils/ApiUtils';
+export * as ScriptRaw from './api/ScriptApi';
 
 // Ops Layer
 export * as Admin from './ops/AdminOps';
