@@ -20,6 +20,7 @@ export * as IdmConfigRaw from './api/IdmConfigApi';
 export * as BaseApi from './api/BaseApi';
 export * as ApiUtils from './api/utils/ApiUtils';
 export * as ScriptRaw from './api/ScriptApi';
+export * as PromotionApi from './api/cloud/PromotionApi';
 
 // Ops Layer
 export * as Admin from './ops/AdminOps';
