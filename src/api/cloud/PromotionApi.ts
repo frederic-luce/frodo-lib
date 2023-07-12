@@ -1,7 +1,7 @@
 import util from 'util';
 import { getTenantURL } from '../utils/ApiUtils';
 import { generateEnvApi } from '../BaseApi';
-import * as state from '../../shared/State';
+import State from '../../shared/State';
 
 const promotionURLTemplate = '%s/environment/promotion/promote';
 const lockURLTemplate = '%s/environment/promotion/lock';
@@ -121,46 +121,46 @@ export interface PromotionRequest {
  * Get status
  * @returns {Promise<RestartStatus>} a promise that resolves to a string indicating status
  */
-export async function getStatus(): Promise<PromotionStatus> {
+export async function getStatus({state}:{state:State}): Promise<PromotionStatus> {
   const urlString = util.format(
     promotionURLTemplate,
     getTenantURL(state.getHost())
   );
-  const { data } = await generateEnvApi(getApiConfig()).get(urlString, {
+  const { data } = await generateEnvApi({ resource: getApiConfig(), state }).get(urlString, {
     withCredentials: true,
   });
   return data;
 }
 
-export async function getLockStatus(): Promise<LockStatus> {
+export async function getLockStatus({state}:{state:State}): Promise<LockStatus> {
   const urlString = util.format(
     lockStateURLTemplate,
     getTenantURL(state.getHost())
   );
-  const { data } = await generateEnvApi(getApiConfig()).get(urlString, {
+  const { data } = await generateEnvApi({ resource: getApiConfig(), state }).get(urlString, {
     withCredentials: true,
   });
   return data;
 }
 
-export async function lock(): Promise<LockResponse> {
+export async function lock({state}:{state:State}): Promise<LockResponse> {
   const urlString = util.format(
     lockURLTemplate,
     getTenantURL(state.getHost())
   );
-  const { data } = await generateEnvApi(getApiConfig()).post(urlString, {
+  const { data } = await generateEnvApi({ resource: getApiConfig(), state }).post(urlString, {
     withCredentials: true,
   });
   return data;
 }
 
-export async function unlock(promotionId: string): Promise<LockResponse> {
+export async function unlock({promotionId, state}:{promotionId: string, state:State}): Promise<LockResponse> {
   const urlString = util.format(
     unlockURLTemplate,
     getTenantURL(state.getHost()),
     promotionId
   );
-  const { data } = await generateEnvApi(getApiConfig()).delete(urlString,
+  const { data } = await generateEnvApi({ resource: getApiConfig(), state }).delete(urlString,
     {
     withCredentials: true,
     }
@@ -168,24 +168,40 @@ export async function unlock(promotionId: string): Promise<LockResponse> {
   return data;
 }
 
-export async function promote(options: { dryRun: boolean, ignoreEncryptedSecret: boolean | undefined, unlockEnvirnementsAfterPromotions: boolean | undefined },
-                              info: { ticketReference: string | undefined, promoter: string | undefined, promotionDescription: string | undefined } ): Promise<PromoteResponse> {
+export interface PromoteOptions {
+  dryRun: boolean,
+  ignoreEncryptedSecret: boolean | undefined,
+  unlockEnvirnementsAfterPromotions: boolean | undefined
+}
+
+export interface PromoteInfos {
+  ticketReference: string | undefined,
+  promoter: string | undefined,
+  promotionDescription: string | undefined
+}
+
+export async function promote( { options, infos, state }: 
+                                        { 
+                                          options: PromoteOptions,
+                                          infos: PromoteInfos, 
+                                          state: State 
+                                        } ): Promise<PromoteResponse> {
   const urlString = util.format(
     promotionURLTemplate,
     getTenantURL(state.getHost())
   );
-  const { data } = await generateEnvApi(getApiConfig()).post(urlString, {...options, ...info}, {
+  const { data } = await generateEnvApi({ resource: getApiConfig(), state }).post(urlString, {...options, ...infos}, {
     withCredentials: true,
   });
   return data;
 }
 
-export async function getProvisionalReport(): Promise<Report> {
+export async function getProvisionalReport({state}:{state:State}): Promise<Report> {
   const urlString = util.format(
     provisionnalReportURLTemplate,
     getTenantURL(state.getHost())
   );
-  const { data } = await generateEnvApi(getApiConfig()).get(urlString, {
+  const { data } = await generateEnvApi({ resource: getApiConfig(), state }).get(urlString, {
     withCredentials: true,
   });
   return data;

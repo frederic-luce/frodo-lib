@@ -33,6 +33,7 @@ import StartupOps from '../ops/cloud/StartupOps';
 import ThemeOps from '../ops/ThemeOps';
 import VariablesOps from '../ops/cloud/VariablesOps';
 import Version from '../ops/utils/Version';
+import PromotionOps from '../ops/cloud/PromotionOps';
 
 // non-instantiable modules
 import * as jose from '../ops/JoseOps';
@@ -67,6 +68,7 @@ export default (config: StateInterface = {}) => {
       serviceAccount: ServiceAccountOps(state),
       startup: StartupOps(state),
       variable: VariablesOps(state),
+      promotion: PromotionOps(state),
     },
 
     conn: ConnectionProfileOps(state),
