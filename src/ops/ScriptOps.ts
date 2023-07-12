@@ -13,6 +13,7 @@ import {
   getScripts as _getScripts,
   putScript as _putScript,
   deleteScript,
+  validateScript as _validateScript,
 } from '../api/ScriptApi';
 import {
   convertBase64TextToArray,
@@ -171,6 +172,25 @@ export async function getScriptByName({
       throw new Error(`${result.length} scripts '${scriptName}' found`);
   }
 }
+
+/**
+ * Validate script
+ * @param {string} language script language
+ * @param {string} script script text
+ * @returns {Promise} a promise that resolves to an object containing a script object
+ */
+export async function validateScript({
+  language,
+  script,
+  state,
+}: {
+  language: string;
+  script: string;
+  state: State;
+}) {
+  return _validateScript({language, script, state});
+}
+
 
 /**
  * Create or update script

@@ -123,18 +123,26 @@ export async function putScript({
 }
 
 /**
- * Put script
- * @param {string} scriptId script uuid
- * @param {Object} scriptData script object
- * @returns {Promise} a promise that resolves to an object containing a script object
+ * Validate script
+ * @param {string} language script language
+ * @param {string} script script text
+ * @returns {Promise} a promise that resolves to an object containing the verification result
  */
-export async function validateScript(language, script) {
+export async function validateScript({
+  language,
+  script,
+  state,
+}: {
+  language: string;
+  script: string;
+  state: State;
+}) {
   const urlString = util.format(
     scriptValidateURLTemplate,
     state.getHost(),
-    getCurrentRealmPath()
+    getCurrentRealmPath(state)
   );
-  const { data } = await generateAmApi(getApiConfig()).post(
+  const { data } = await generateAmApi({ resource: getApiConfig(), state }).post(
     urlString,
     { language, script },
     {
