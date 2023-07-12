@@ -62,24 +62,32 @@ export async function getVariable({
 /**
  * Put variable by id/name
  * @param {string} variableId variable id/name
- * @param {string} value variable value
+ * @param {string} valueBase64 variable value pre-encoded in base64
+ * @param {string} value variable value (will be encoded in base64, only used if valueBase64 is not provided)
  * @param {string} description variable description
  * @returns {Promise<unknown>} a promise that resolves to a variable object
  */
 export async function putVariable({
   variableId,
   value,
+  valueBase64,
   description,
+  expressionType,
   state,
 }: {
   variableId: string;
   value: string;
+  valueBase64: string;
   description: string;
+  expressionType: string;
   state: State;
 }) {
   const variableData = {};
-  if (value) variableData['valueBase64'] = encode(value);
+  if (valueBase64) variableData['valueBase64'] = valueBase64;
+  else
+    if (value) variableData['valueBase64'] = encode(value);
   if (description) variableData['description'] = description;
+  if (expressionType) variableData['expressionType'] = expressionType;
   const urlString = util.format(
     variableURLTemplate,
     getTenantURL(state.getHost()),

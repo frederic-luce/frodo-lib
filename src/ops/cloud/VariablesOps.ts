@@ -42,8 +42,8 @@ export default (state: State) => {
      * @param {string} description variable description
      * @returns {Promise<unknown>} a promise that resolves to a variable object
      */
-    putVariable(variableId: string, value: string, description: string) {
-      return putVariable({ variableId, value, description, state });
+    putVariable(variableId: string, value: string, description: string, expressionType: string, valueBase64: string) {
+      return putVariable({ variableId, valueBase64, value, description, expressionType, state });
     },
 
     /**
