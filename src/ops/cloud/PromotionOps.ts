@@ -6,6 +6,10 @@ import {
     promote,
     getStatus,
     getProvisionalReport,
+    getReports,
+    getLastReport,
+    getReportById,
+    buildReport,
     PromoteInfos,
     PromoteOptions,
     PromoteResponse,
@@ -25,6 +29,10 @@ export default (state: State) => {
     promote: async (options: PromoteOptions, infos: PromoteInfos): Promise<PromoteResponse> => promote({options, infos, state}),
     getStatus: async (): Promise<PromotionStatus> => getStatus({state}),
     getProvisionalReport: async (): Promise<any> => getProvisionalReport({state}),
+    getReports: async (): Promise<any> => getReports({state}),
+    getLastReport: async (): Promise<any> => getLastReport({state}),
+    getReportById: async (reportId: string): Promise<any> => getReportById({reportId, state}),
+    buildReport: async (): Promise<any> => buildReport({state}),
   }
 }
  

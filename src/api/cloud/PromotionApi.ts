@@ -8,6 +8,9 @@ const lockURLTemplate = '%s/environment/promotion/lock';
 const unlockURLTemplate = '%s/environment/promotion/lock/%s';
 const lockStateURLTemplate = '%s/environment/promotion/lock/state';
 const provisionnalReportURLTemplate = '%s/environment/promotion/report/provisional';
+const reportsURLTemplate = '%s/environment/promotion/reports';
+const reportURLTemplate = '%s/environment/promotion/report';
+const reportByIdURLTemplate = '%s/environment/promotion/report/%s';
 
 const apiVersion = 'protocol=1.0,resource=1.0';
 
@@ -207,7 +210,57 @@ export async function getProvisionalReport({state}:{state:State}): Promise<Repor
   return data;
 }
 
+export interface PromotionReportSummary {
+  reportId: string,
+  promotionId: string,
+  createdDate: string,
+  dryRun: boolean,
+}
 
+export async function getReports({state}:{state:State}): Promise<PromotionReportSummary[]> {
+  const urlString = util.format(
+    reportsURLTemplate,
+    getTenantURL(state.getHost())
+  );
+  const { data } = await generateEnvApi({ resource: getApiConfig(), state }).get(urlString, {
+    withCredentials: true,
+  });
+  return data;
+}
+
+export async function buildReport({state}:{state:State}): Promise<Report> {
+  const urlString = util.format(
+    reportURLTemplate,
+    getTenantURL(state.getHost())
+  );
+  const { data } = await generateEnvApi({ resource: getApiConfig(), state }).post(urlString, {
+    withCredentials: true,
+  });
+  return data;
+}
+
+export async function getLastReport({state}:{state:State}): Promise<Report> {
+  const urlString = util.format(
+    reportURLTemplate,
+    getTenantURL(state.getHost())
+  );
+  const { data } = await generateEnvApi({ resource: getApiConfig(), state }).get(urlString, {
+    withCredentials: true,
+  });
+  return data;
+}
+
+export async function getReportById({reportId, state}:{reportId:string, state:State}): Promise<Report> {
+  const urlString = util.format(
+    reportByIdURLTemplate,
+    getTenantURL(state.getHost()),
+    reportId
+  );
+  const { data } = await generateEnvApi({ resource: getApiConfig(), state }).get(urlString, {
+    withCredentials: true,
+  });
+  return data;
+}
 
 /**
  * Initiate restart
