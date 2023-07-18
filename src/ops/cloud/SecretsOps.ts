@@ -4,6 +4,7 @@ import {
   deleteSecret,
   deleteVersionOfSecret,
   getSecret,
+  getSecretValue,
   getSecrets,
   getSecretVersions,
   getVersionOfSecret,
@@ -30,6 +31,10 @@ export default (state: State) => {
      */
     async getSecret(secretId: string) {
       return getSecret({ secretId, state });
+    },
+
+    async getSecretValue(secretId: string) {
+      return getSecretValue({ secretId, state });
     },
 
     /**
