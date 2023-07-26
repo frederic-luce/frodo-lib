@@ -22,7 +22,6 @@ import State from '../../shared/State';
   
 export default (state: State) => {
   return {
-
     getLockStatus: async (): Promise<LockStatus> => getLockStatus({state}),
     lock: async (): Promise<LockResponse> => lock({state}),
     unlock: async (promotionId: string): Promise<LockResponse> => unlock({promotionId, state}),

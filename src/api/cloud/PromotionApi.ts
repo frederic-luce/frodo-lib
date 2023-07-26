@@ -174,7 +174,7 @@ export async function unlock({promotionId, state}:{promotionId: string, state:St
 export interface PromoteOptions {
   dryRun: boolean,
   ignoreEncryptedSecret: boolean | undefined,
-  unlockEnvirnementsAfterPromotions: boolean | undefined
+  unlockEnvironmentsAfterPromotion: boolean | undefined
 }
 
 export interface PromoteInfos {

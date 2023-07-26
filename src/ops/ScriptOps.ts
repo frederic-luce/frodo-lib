@@ -114,7 +114,11 @@ export default (state: State) => {
     deleteScript(scriptId: string) {
       return deleteScript({ scriptId, state });
     },
-  };
+
+    validateScript(language: string, script: string) {
+      return validateScript({language, script, state});
+    }
+  }  
 };
 
 export interface ScriptExportInterface {
