@@ -6,6 +6,7 @@ import {
   getScriptByName as _getScriptByName,
   getScripts as _getScripts,
   putScript as _putScript,
+  validateScript as _validateScript,
   type ScriptSkeleton,
 } from '../api/ScriptApi';
 import { type ExportMetaData } from '../ops/OpsTypes';
@@ -107,6 +108,8 @@ export type Script = {
     reUuid?: boolean,
     validate?: boolean
   ): Promise<ScriptSkeleton[]>;
+
+  validateScript(language: string, script: string): Promise<boolean>;
 
   // Deprecated
 
@@ -233,7 +236,11 @@ export default (state: State): Script => {
     ): Promise<ScriptSkeleton> {
       return updateScript({ scriptId, scriptData, state });
     },
-  };
+
+    validateScript(language: string, script: string): Promise<boolean> {
+      return validateScript({language, script, state});
+    }
+  }  
 };
 
 export interface ScriptExportInterface {
@@ -338,6 +345,25 @@ export async function createScript({
   }
   throw new Error(`Script ${scriptData._id} already exists!`);
 }
+
+/**
+ * Validate script
+ * @param {string} language script language
+ * @param {string} script script text
+ * @returns {Promise} a promise that resolves to an object containing a script object
+ */
+export async function validateScript({
+  language,
+  script,
+  state,
+}: {
+  language: string;
+  script: string;
+  state: State;
+}) {
+  return _validateScript({language, script, state});
+}
+
 
 /**
  * Create or update script
