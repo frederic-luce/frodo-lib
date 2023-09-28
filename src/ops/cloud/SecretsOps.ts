@@ -3,6 +3,7 @@ import {
   deleteSecret as _deleteSecret,
   deleteVersionOfSecret as _deleteVersionOfSecret,
   getSecret as _getSecret,
+  getSecretValue as _getSecretValue,
   getSecrets as _getSecrets,
   getSecretVersions as _getSecretVersions,
   getVersionOfSecret as _getVersionOfSecret,
@@ -150,6 +151,9 @@ export type Secret = {
    * ```
    * @group Deprecated
    */
+
+  getSecretValue(secretId: string): Promise<string>;
+
   putSecret(
     secretId: string,
     value: string,
@@ -237,6 +241,9 @@ export default (state: State): Secret => {
     },
     async readSecret(secretId: string) {
       return _getSecret({ secretId, state });
+    },
+    async getSecretValue(secretId) {
+      return _getSecretValue({ secretId, state });
     },
     async createSecret(
       secretId: string,

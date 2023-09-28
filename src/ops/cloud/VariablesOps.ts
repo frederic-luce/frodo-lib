@@ -32,7 +32,7 @@ export type Variable = {
    */
   createVariable(
     variableId: string,
-    value: string,
+    value: string | { base64: string },
     description: string,
     expressionType?: VariableExpressionType
   ): Promise<VariableSkeleton>;
@@ -46,7 +46,7 @@ export type Variable = {
    */
   updateVariable(
     variableId: string,
-    value: string,
+    value: string | { base64: string },
     description: string,
     expressionType?: VariableExpressionType
   ): Promise<VariableSkeleton>;
@@ -121,6 +121,7 @@ export type Variable = {
    * @group Deprecated
    */
   setVariableDescription(variableId: string, description: string): Promise<any>;
+
 };
 
 export default (state: State): Variable => {
@@ -133,13 +134,14 @@ export default (state: State): Variable => {
     },
     createVariable(
       variableId: string,
-      value: string,
+      value: string | { base64: string },
       description: string,
       expressionType: VariableExpressionType = 'string'
     ): Promise<VariableSkeleton> {
       return createVariable({
         variableId,
-        value,
+        value: typeof value === "string" ? value : undefined,
+        valueBase64: typeof value !== "string" ? value.base64 : undefined,
         description,
         expressionType,
         state,
@@ -147,13 +149,14 @@ export default (state: State): Variable => {
     },
     updateVariable(
       variableId: string,
-      value: string,
+      value: string | { base64: string },
       description: string,
       expressionType: VariableExpressionType = 'string'
     ): Promise<VariableSkeleton> {
       return updateVariable({
         variableId,
-        value,
+        value: typeof value === "string" ? value : undefined,
+        valueBase64: typeof value !== "string" ? value.base64 : undefined,
         description,
         expressionType,
         state,
@@ -208,6 +211,7 @@ export default (state: State): Variable => {
   };
 };
 
+
 export async function readVariable({
   variableId,
   state,
@@ -229,12 +233,14 @@ export async function readVariables({
 export async function createVariable({
   variableId,
   value,
+  valueBase64,
   description,
   expressionType,
   state,
 }: {
   variableId: string;
   value: string;
+  valueBase64?: string;
   description?: string;
   expressionType?: VariableExpressionType;
   state: State;
@@ -249,6 +255,7 @@ export async function createVariable({
     const result = await _putVariable({
       variableId,
       value,
+      valueBase64,
       description,
       expressionType,
       state,
@@ -265,12 +272,14 @@ export async function createVariable({
 export async function updateVariable({
   variableId,
   value,
+  valueBase64,
   description,
   expressionType,
   state,
 }: {
   variableId: string;
   value: string;
+  valueBase64?: string;
   description?: string;
   expressionType?: VariableExpressionType;
   state: State;
@@ -278,6 +287,7 @@ export async function updateVariable({
   return _putVariable({
     variableId,
     value,
+    valueBase64,
     description,
     expressionType,
     state,

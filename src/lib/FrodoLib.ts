@@ -51,6 +51,7 @@ import JsonUtils, { Json } from '../utils/JsonUtils';
 import ScriptValidationUtils, {
   ScriptValidation,
 } from '../utils/ScriptValidationUtils';
+import PromotionOps, { Promotion } from '../ops/cloud/PromotionOps';
 
 /**
  * Frodo Library
@@ -80,6 +81,7 @@ export type Frodo = {
     serviceAccount: ServiceAccount;
     startup: Startup;
     variable: Variable;
+    promotion: Promotion;
   };
 
   conn: ConnectionProfile;
@@ -214,6 +216,7 @@ const FrodoLib = (config: StateInterface = {}): Frodo => {
       serviceAccount: ServiceAccountOps(state),
       startup: StartupOps(state),
       variable: VariablesOps(state),
+      promotion: PromotionOps(state),
     },
 
     conn: ConnectionProfileOps(state),

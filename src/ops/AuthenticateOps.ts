@@ -59,9 +59,9 @@ export default (state: State): Authenticate => {
 const adminClientPassword = 'doesnotmatter';
 const redirectUrlTemplate = '/platform/appAuthHelperRedirect.html';
 
-const cloudIdmAdminScopes = 'openid fr:idm:* fr:idc:esv:*';
+const cloudIdmAdminScopes = 'openid fr:idm:* fr:idc:esv:* fr:idc:promotion:*';
 const forgeopsIdmAdminScopes = 'openid fr:idm:*';
-const serviceAccountScopes = 'fr:am:* fr:idm:* fr:idc:esv:*';
+const serviceAccountScopes = 'fr:am:* fr:idm:* fr:idc:esv:* fr:idc:promotion:*';
 
 let adminClientId = 'idmAdminClient';
 

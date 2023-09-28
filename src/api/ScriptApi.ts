@@ -6,6 +6,7 @@ import { type IdObjectSkeletonInterface, type PagedResult } from './ApiTypes';
 import { generateAmApi } from './BaseApi';
 
 const scriptURLTemplate = '%s/json%s/scripts/%s';
+const scriptValidateURLTemplate = '%s/json%s/scripts/?_action=validate';
 const scriptListURLTemplate = '%s/json%s/scripts?_queryFilter=true';
 const scriptQueryURLTemplate =
   '%s/json%s/scripts?_queryFilter=name+eq+%%22%s%%22';
@@ -152,6 +153,37 @@ export async function putScript({
   );
   return data;
 }
+
+/**
+ * Validate script
+ * @param {string} language script language
+ * @param {string} script script text
+ * @returns {Promise} a promise that resolves to an object containing the verification result
+ */
+export async function validateScript({
+  language,
+  script,
+  state,
+}: {
+  language: string;
+  script: string;
+  state: State;
+}) {
+  const urlString = util.format(
+    scriptValidateURLTemplate,
+    state.getHost(),
+    getCurrentRealmPath(state)
+  );
+  const { data } = await generateAmApi({ resource: getApiConfig(), state }).post(
+    urlString,
+    { language, script },
+    {
+      withCredentials: true,
+    }
+  );
+  return data;
+}
+
 
 /**
  * Delete script by id

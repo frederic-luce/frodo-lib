@@ -13,6 +13,7 @@ const secretGetVersionURLTemplate = `${secretListVersionsURLTemplate}/%s`;
 const secretVersionStatusURLTemplate = `${secretGetVersionURLTemplate}?_action=changestatus`;
 const secretURLTemplate = '%s/environment/secrets/%s';
 const secretSetDescriptionURLTemplate = `${secretURLTemplate}?_action=setDescription`;
+const evaluateURLTemplate = '%s/openidm/script?_action=eval';
 
 const apiVersion = 'protocol=1.0,resource=1.0';
 const getApiConfig = () => ({
@@ -120,6 +121,37 @@ export async function getSecret({
   }).get(urlString, {
     withCredentials: true,
   });
+  return data;
+}
+
+/**
+ * Get secret
+ * @param secretId secret id/name
+ * @returns {Promise<string>} a promise that resolves to a secret
+ */
+export async function getSecretValue({
+  secretId,
+  state,
+}: {
+  secretId: string;
+  state: State;
+}): Promise<string> {
+  const urlString = util.format(
+    evaluateURLTemplate,
+    getHostBaseUrl(state.getHost())
+  );
+  const { data } = await generateEnvApi({
+    resource: getApiConfig(),
+    state,
+  }).post(urlString, 
+    {
+      type: 'text/javascript',
+      source: 'identityServer.getProperty("' + secretId.replaceAll('-', '.') + '")'
+    },
+    {
+    withCredentials: true,
+    }
+  );
   return data;
 }
 

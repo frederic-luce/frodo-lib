@@ -111,25 +111,28 @@ export async function getVariable({
 /**
  * Create or update variable by id/name
  * @param {string} variableId variable id/name
- * @param {string} value variable value
+ * @param {string} valueBase64 variable value pre-encoded in base64
+ * @param {string} value variable value (will be encoded in base64, only used if valueBase64 is not provided)
  * @param {string} description variable description
  * @returns {Promise<unknown>} a promise that resolves to a variable object
  */
 export async function putVariable({
   variableId,
   value,
-  description = '',
-  expressionType = 'string',
+  valueBase64,
+  description,
+  expressionType,
   state,
 }: {
   variableId: string;
   value: string;
+  valueBase64: string;
   description?: string;
   expressionType?: VariableExpressionType;
   state: State;
 }): Promise<VariableSkeleton> {
   const variableData: VariableSkeleton = {
-    valueBase64: encode(value),
+    valueBase64: valueBase64 || encode(value),
     description,
     expressionType,
   };
