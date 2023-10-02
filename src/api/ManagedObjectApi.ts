@@ -108,6 +108,37 @@ export async function putManagedObject({
 }
 
 /**
+ * Patch managed object
+ * @param {string} id managed object id
+ * @param {any} patchData JSON Patch
+ * @param {State} state library state
+ * @returns {Promise<IdObjectSkeletonInterface>} a promise that resolves to an object containing a managed object
+ */
+export async function patchManagedObject({
+  type,
+  id,
+  patchData,
+  state,
+}: {
+  type: string;
+  id: string;
+  patchData: any;
+  state: State;
+}): Promise<IdObjectSkeletonInterface> {
+  const urlString = util.format(
+    managedObjectByIdURLTemplate,
+    getHostBaseUrl(state.getHost()),
+    type,
+    id
+  );
+  const { data } = await generateIdmApi({ state }).patch(
+    urlString,
+    patchData
+  );
+  return data;
+}
+
+/**
  * Query managed object
  * @param {string} type managed object type, e.g. alpha_user or user
  * @param {string} filter CREST search filter

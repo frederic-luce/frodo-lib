@@ -4,6 +4,7 @@ import {
   deleteManagedObject as _deleteManagedObject,
   getManagedObject as _getManagedObject,
   putManagedObject as _putManagedObject,
+  patchManagedObject as _patchManagedObject,
   queryAllManagedObjectsByType,
   queryManagedObjects as _queryManagedObjects,
 } from '../api/ManagedObjectApi';
@@ -54,6 +55,18 @@ export type ManagedObject = {
     type: string,
     id: string,
     moData: IdObjectSkeletonInterface
+  ): Promise<IdObjectSkeletonInterface>;
+  /**
+   * Update managed object
+   * @param {string} type managed object type, e.g. alpha_user or user
+   * @param {string} id managed object id
+   * @param {IdObjectSkeletonInterface} moData managed object data
+   * @returns {Promise<IdObjectSkeletonInterface>} a promise that resolves to an IdObjectSkeletonInterface
+   */
+  patchManagedObject(
+    type: string,
+    id: string,
+    patchData: any
   ): Promise<IdObjectSkeletonInterface>;
   /**
    * Delete managed object
@@ -121,6 +134,13 @@ export default (state: State): ManagedObject => {
       moData: IdObjectSkeletonInterface
     ): Promise<IdObjectSkeletonInterface> {
       return updateManagedObject({ type, id, moData, state });
+    },
+    async patchManagedObject(
+      type: string,
+      id: string,
+      patchData: any
+    ): Promise<IdObjectSkeletonInterface> {
+      return patchManagedObject({ type, id, patchData, state });
     },
     async deleteManagedObject(
       type: string,
@@ -216,6 +236,20 @@ export async function updateManagedObject({
   state: State;
 }): Promise<IdObjectSkeletonInterface> {
   return _putManagedObject({ type, id, moData, state });
+}
+
+export async function patchManagedObject({
+  type,
+  id,
+  patchData,
+  state,
+}: {
+  type: string;
+  id: string;
+  patchData: any;
+  state: State;
+}): Promise<IdObjectSkeletonInterface> {
+  return _patchManagedObject({ type, id, patchData, state });
 }
 
 export async function deleteManagedObject({
