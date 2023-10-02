@@ -52,6 +52,9 @@ import ScriptValidationUtils, {
   ScriptValidation,
 } from '../utils/ScriptValidationUtils';
 
+import { generateAmApi, generateIdmApi } from '../api/BaseApi';
+import { AxiosInstance } from 'axios';
+
 /**
  * Frodo Library
  */
@@ -127,6 +130,16 @@ export type Frodo = {
       json: Json;
       version: Version;
     };
+
+  baseAPI: {
+    generateAmApi(
+      resource: any,
+      requestOverride?: any
+    ):AxiosInstance,
+    generateIdmApi(
+      requestOverride?: any
+    ):AxiosInstance;     
+  };
 
   /**
    * Create a new frodo instance
@@ -261,6 +274,11 @@ const FrodoLib = (config: StateInterface = {}): Frodo => {
       jose: JoseOps(state),
       json: JsonUtils(),
       version: VersionUtils(state),
+    },
+
+    baseAPI: {
+      generateAmApi: (resource,requestOverride)=> generateAmApi({resource,requestOverride,state}),
+      generateIdmApi: (requestOverride) => generateIdmApi({requestOverride,state})
     },
 
     createInstance,
